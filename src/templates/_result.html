@@ -1,7 +1,16 @@
 <br>
+<a href="{{url_for('index')}}">Try Another One</a>
+<br>
+
+{% if nsfw %}
 <h2>Results</h2>
+{% endif %}
 
 {% for tag in nsfw %}
     {{tag}}
 {% endfor %}
 
+<h2>Image</h2>
+<img
+    alt="Embedded Image"
+    src="data:{{ img_type }};base64,{{ img_b64 }}" />
