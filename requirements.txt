@@ -1,0 +1,6 @@
+gunicorn
+flask
+funcy
+toolz
+boto3
+easydict

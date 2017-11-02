@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}SteemData Classify{% endblock %}</title>
+        <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dropzone.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+
+    <body>
+
+        <div class="ui container">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        {% block footer %}
+        <br>
+        <br>
+        {% endblock %}
+
+        <script src="{{ url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='node_modules/lodash/lodash.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='node_modules/dropzone/dist/min/dropzone.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='node_modules/semantic-ui-css/semantic.min.js') }}"></script>
+
+        <script type="application/javascript">
+            // SEMANTIC.UI
+            $(function () {
+                // Enable dropdown
+                $('.ui.dropdown').dropdown();
+                // Enable close button on messages
+                $('.message .close').on('click', function() {
+                    $(this).closest('.message').transition('fade');
+                });
+            });
+        </script>
+
+        {% block scripts %}
+        {% endblock %}
+    </body>
+</html>

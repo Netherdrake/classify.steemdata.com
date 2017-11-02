@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Image Classifier Demo{% endblock %}
+
+{% block content %}
+    <div id="upload" class="ui text container text-center">
+        <br>
+        <div id="processing" class="ui positive message" style="display: none;"></div>
+
+        <div class="upload-area">
+            <img src="{{ url_for('static', filename='img/logo-lg2.png') }}" class="logo" alt="">
+            <p>This app allows you to upload and classify new images, or classify existing images from
+            Steem Posts.</p>
+            <br>
+            <div class="ui horizontal divider">Upload a file</div>
+            <div id="dropzone">
+                <form action="/upload" class="dropzone" id="dropzoneimg">
+                    <input type="hidden" name="is_dropzone" value="true"/>
+                </form>
+            </div>
+
+            <br>
+            <div class="ui horizontal divider">Analyze a Steemit Post</div>
+            <form method="post" action="/steemit_post" name="steemit_post">
+                <div class="ui fluid left icon action input">
+                    <i class="content icon"></i>
+                    <input type="text" name="uri" placeholder="@author/identifier">
+                    <button class="ui blue submit button">Analyze</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="results" class="ui text container text-center" style="display: none;"></div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        Dropzone.autoDiscover = false;
+        $(function () {
+            Dropzone.options.dropzoneimg = {
+                dictDefaultMessage: "Drag-n-drop your dirty pics in here...",
+                maxFilesize: 5, // MB
+                uploadMultiple: false,
+                maxFiles: 1,
+                acceptedFiles: '.png,.jpg'
+
+            };
+
+            // Now that the DOM is fully loaded, create the dropzone, and setup the
+            // event listeners
+            var myDropzone = new Dropzone("#dropzoneimg");
+            var statusBar = $('#processing');
+            var hidden = false;
+
+            myDropzone.on("uploadprogress", function (e, progress) {
+                if (hidden === false) {
+                    $('.upload-area').hide();
+                    $('.header-area').hide();
+                    statusBar.show();
+                    hidden = true;
+                }
+
+                if (progress < 100) {
+                    statusBar.text('Uploading...' + Math.round(progress) + '%');
+                }
+                if (progress === 100) {
+                    statusBar.text('Uploading...Done. Analyzing...');
+                }
+            });
+            myDropzone.on("success", function (status, resp) {
+                console.log(status);
+                console.log(resp);
+                if (status.status == "success") {
+                    $('#upload').hide();
+                    $('#results').show();
+                    $('#results').html(resp);
+                }
+            });
+             myDropzone.on("error", function (status, resp) {
+                console.log(status);
+                console.log(resp);
+                statusBar.text('Failed!');
+            });
+
+
+            // Steemit Form
+            $('form[name=steemit-post]').submit(function () {
+                $('.upload-area').hide();
+                $('.header-area').hide();
+                statusBar.show().text('Processing...');
+                $.post($(this).attr('action'), $(this).serialize(), function (resp) {
+                    statusBar.text('Processing...Done. Syncing...');
+                    setTimeout(function () {
+                        window.location = "/publish/" + resp['ipfs_root'] + "?video_file=" + resp['video_file'];
+                    }, 5 * 1000);
+                }, 'json').fail(function(){
+                    statusBar.text('Processing...FAILED');
+                });
+
+                return false;
+            });
+        });
+    </script>
+{% endblock %}
