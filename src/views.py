@@ -1,5 +1,6 @@
 import datetime as dt
 import binascii
+import pickle
 
 from flask import (
     render_template,
@@ -29,13 +30,23 @@ def uploader():
 
     img_b64 = binascii.b2a_base64(upload).decode()
 
-    # import pdb; pdb.set_trace()
     return render_template(
         '_result.html',
         nsfw=nsfw(upload),
         labels=labels(upload),
         img_b64=img_b64,
         img_type=img_type,
+    )
+
+@app.route('/steem-post', methods=['POST'])
+def steem_post():
+    with open('test2.pickle', 'rb') as f:
+        data = pickle.load(f)
+
+    # import pdb; pdb.set_trace()
+    return render_template(
+        '_result-steem.html',
+        data=data
     )
 
 if __name__ == '__main__':

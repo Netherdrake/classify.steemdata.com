@@ -1,0 +1,45 @@
+<br>
+<a href="{{url_for('index')}}" class="ui button blue large">Homepage</a>
+<br></br>
+<div class="ui horizontal divider">Results</div>
+<br>
+
+<!-- <h2>Images</h2> -->
+<div class="ui relaxed items">
+    {% for url, image in data.items() %}
+    <div class="item text-left">
+
+        <div class="ui small image">
+            <img
+             class="{%if image.nsfw %}img-blur{%endif%}"
+             alt="Embedded Image"
+             src="data:image/jpg;base64,{{image.data}}" />
+        </div>
+
+        <div class="content">
+            <div class="header">
+                {% if image.nsfw %}
+                    NSFW Detected!
+                {% else %}
+                    The image appears to be safe.
+                {% endif %}
+            </div>
+            <div class="meta">
+                {% for tag in image.nsfw %}
+                    <div class="ui label red">{{tag.Name}}</div>
+                {% endfor %}
+            </div>
+
+            <div class="extra">
+                Tag Suggestions: <br>
+                {% for tag in image.labels %}
+                    <div class="ui label">{{tag.Name}}</div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+    {% endfor %}
+
+</div>

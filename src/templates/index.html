@@ -8,10 +8,11 @@
         <div id="processing" class="ui positive message" style="display: none;"></div>
 
         <div class="upload-area">
-            <img src="{{ url_for('static', filename='img/logo-lg2.png') }}" class="logo" alt="">
-            <p>This app allows you to upload and classify new images, or classify existing images from
-            Steem Posts.</p>
-            <br>
+            <img src="{{ url_for('static', filename='img/mentions.jpg') }}" class="logo" alt="">
+            {# <br></br> #}
+            {# <p>This app allows you to upload and classify new images, or classify existing images from #}
+            {# Steem Posts.</p> #}
+            {# <br> #}
             <div class="ui horizontal divider">Upload a file</div>
             <div id="dropzone">
                 <form action="/upload" class="dropzone" id="dropzoneimg">
@@ -21,10 +22,10 @@
 
             <br>
             <div class="ui horizontal divider">Analyze a Steemit Post</div>
-            <form method="post" action="/steemit_post" name="steemit_post">
+            <form method="post" action="/steem-post" name="steem-post">
                 <div class="ui fluid left icon action input">
                     <i class="content icon"></i>
-                    <input type="text" name="uri" placeholder="@author/identifier">
+                    <input type="text" name="identifier" placeholder="@author/identifier">
                     <button class="ui blue submit button">Analyze</button>
                 </div>
             </form>
@@ -85,16 +86,15 @@
 
 
             // Steemit Form
-            $('form[name=steemit-post]').submit(function () {
+            $('form[name=steem-post]').submit(function () {
                 $('.upload-area').hide();
                 $('.header-area').hide();
                 statusBar.show().text('Processing...');
                 $.post($(this).attr('action'), $(this).serialize(), function (resp) {
-                    statusBar.text('Processing...Done. Syncing...');
-                    setTimeout(function () {
-                        window.location = "/publish/" + resp['ipfs_root'] + "?video_file=" + resp['video_file'];
-                    }, 5 * 1000);
-                }, 'json').fail(function(){
+                    $('#upload').hide();
+                    $('#results').show();
+                    $('#results').html(resp);
+                }, 'html').fail(function(){
                     statusBar.text('Processing...FAILED');
                 });
 

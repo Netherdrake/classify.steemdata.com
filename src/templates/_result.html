@@ -1,16 +1,27 @@
 <br>
-<a href="{{url_for('index')}}">Try Another One</a>
+<a href="{{url_for('index')}}" class="ui button blue large">Homepage</a>
+<!-- <br></br> -->
+<!-- <div class="ui horizontal divider">Results</div> -->
 <br>
 
 {% if nsfw %}
-<h2>Results</h2>
+    <h2>NSFW Detected</h2>
+    {% for tag in nsfw %}
+        <div class="ui label red">{{tag.Name}}</div>
+    {% endfor %}
 {% endif %}
-
-{% for tag in nsfw %}
-    {{tag}}
-{% endfor %}
 
 <h2>Image</h2>
 <img
+    class="{%if nsfw %}img-blur{%endif%}"
     alt="Embedded Image"
     src="data:{{ img_type }};base64,{{ img_b64 }}" />
+
+<br></br>
+<div class="ui horizontal divider">Suggested Tags</div>
+<br>
+
+{% for tag in labels %}
+    <div class="ui label">{{tag.Name}}</div>
+{% endfor %}
+
