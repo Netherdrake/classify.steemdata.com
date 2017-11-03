@@ -9,13 +9,13 @@ config = ed(
 rkg = boto3.client('rekognition', region_name=config.region_name)
 
 
-def nsfw(img):
+def nsfw(img: bytes):
     response = rkg.detect_moderation_labels(
         Image={'Bytes': img},
     )
     return response['ModerationLabels']
 
-def labels(img):
+def labels(img: bytes):
     response = rkg.detect_labels(
         Image={'Bytes': img},
         MaxLabels=100,
