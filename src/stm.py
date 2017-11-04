@@ -32,7 +32,7 @@ class AnalyzePost:
 
 
 if __name__ == '__main__':
-    permlink = '@nspart/nspart-a-shot-from-new-series-i-shot-with-cj-sparxx-a-steemit-first-post'
+    permlink = '@azzurra92/naked-in-the-car'
     a = AnalyzePost(permlink)
     print(a.run())
 
