@@ -2,6 +2,7 @@
 <a href="{{url_for('index')}}" class="ui button blue large">Homepage</a>
 <br></br>
 <div class="ui horizontal divider">Results</div>
+Showing results for <a href="https://steemit.com/{{post.url}}" target="_blank">{{post.identifier}}</a>
 <br>
 
 <!-- <h2>Images</h2> -->
@@ -34,6 +35,8 @@
                 Tag Suggestions: <br>
                 {% for tag in image.labels %}
                     <div class="ui label">{{tag.Name}}</div>
+                {% else %}
+                    <i>None</i>
                 {% endfor %}
             </div>
 

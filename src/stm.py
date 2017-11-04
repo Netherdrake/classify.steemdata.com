@@ -7,11 +7,10 @@ from .analyze import nsfw, labels
 class AnalyzePost:
     def __init__(self, post_identifier):
         self.post_identifier = post_identifier
+        self.post = Post(self.post_identifier)
         self.results = None
-        self.post = None
 
     def list_images(self):
-        self.post = Post(self.post_identifier)
         return self.post.json_metadata['image']
 
     def run(self):

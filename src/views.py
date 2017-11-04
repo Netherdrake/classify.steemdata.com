@@ -12,6 +12,7 @@ from funcy import last
 
 from . import app
 from .analyze import nsfw, labels
+from .stm import AnalyzePost
 
 
 # router
@@ -40,13 +41,14 @@ def uploader():
 
 @app.route('/steem-post', methods=['POST'])
 def steem_post():
-    with open('test2.pickle', 'rb') as f:
-        data = pickle.load(f)
+    post_identifier = request.form['identifier']
+    a = AnalyzePost(post_identifier)
+    a.run()
 
-    # import pdb; pdb.set_trace()
     return render_template(
         '_result-steem.html',
-        data=data
+        data=a.results,
+        post=a.post,
     )
 
 if __name__ == '__main__':
