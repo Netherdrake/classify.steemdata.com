@@ -1,12 +1,19 @@
 import requests
 import binascii
+from steem import Steem
 from steem.post import Post
 from steem.account import Account
 from steemdata import SteemData
+from steembase.exceptions import RPCError
 from funcy import take, some
+from contextlib import suppress
 
 from .analyze import nsfw, labels
-from .config import BOT_USERNAME
+from .config import (
+    BOT_USERNAME,
+    STEEM_POSTING_KEY,
+    NSFW_WARNING_MSG,
+)
 
 class AnalyzePost:
     sd = SteemData()
@@ -66,8 +73,20 @@ class AnalyzePost:
 
 
 def send_nsfw_warning(post_identifier):
-    with open('warnings.txt', 'a') as f:
-        f.write(f'{post_identifier}\n')
+    # By constructing the static identifier,
+    # we avoid the need to check Account history.
+    s = Steem(keys=[STEEM_POSTING_KEY])
+    post_permlink = post_identifier.split("/")[-1]
+    permlink = f're-{post_permlink}'
+    with suppress(RPCError):
+        s.commit.post(
+            reply_identifier=post_identifier,
+            permlink=permlink,
+            title='nsfw-bot-warning',
+            body=NSFW_WARNING_MSG,
+            author=BOT_USERNAME,
+            self_vote=True,
+        )
 
 
 if __name__ == '__main__':

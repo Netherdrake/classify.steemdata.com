@@ -50,8 +50,6 @@ def analyze_task(post_identifier):
     Returns True if nsfw found, otherwise False
     """
     a = AnalyzePost(post_identifier)
-    if a.has_warned_already():
-        return True
 
     for result in a.analyze_images_iter():
         if result['nsfw']:
