@@ -26,15 +26,19 @@ class AnalyzePost:
     def list_images(self):
         return self.post.json_metadata['image']
 
-    def analyze_images_iter(self):
+    def analyze_images_iter(self, **kwargs):
         for img_url in self.list_images():
             img_b = self.get_image(img_url)
             img_b64 = binascii.b2a_base64(img_b).decode()
-            yield {
+            result = {
                 'data': img_b64,
-                'nsfw': nsfw(img_b),
-                'labels': labels(img_b),
             }
+            if kwargs.get('nsfw', True):
+                result['nsfw'] = nsfw(img_b)
+            if kwargs.get('labels', True):
+                result['labels'] = labels(img_b)
+
+            yield result
 
     def analyze_images(self):
         self.results = list(self.analyze_images_iter())

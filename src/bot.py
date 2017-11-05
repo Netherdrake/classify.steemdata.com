@@ -51,7 +51,7 @@ def analyze_task(post_identifier):
     """
     a = AnalyzePost(post_identifier)
 
-    for result in a.analyze_images_iter():
+    for result in a.analyze_images_iter(labels=False):
         if result['nsfw']:
             send_nsfw_warning(post_identifier)
             return True
