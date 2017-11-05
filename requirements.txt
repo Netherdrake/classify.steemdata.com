@@ -4,3 +4,6 @@ funcy
 toolz
 boto3
 easydict
+redis
+rq
+steemdata
