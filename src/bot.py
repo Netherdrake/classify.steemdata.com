@@ -45,7 +45,7 @@ def run():
 
     comments = b.stream(
         filter_by='comment',
-        start_block=int(redis_conn.get('nsfw_bot_head')),
+        start_block=int(redis_conn.get('nsfw_bot_head') or 0),
     )
     stream = thread_last(
         comments,
