@@ -24,7 +24,7 @@ class AnalyzePost:
         self.results = None
 
     def list_images(self):
-        return self.post.json_metadata['image']
+        return self.post.json_metadata.get('image', [])
 
     def analyze_images_iter(self, **kwargs):
         for img_url in self.list_images():
