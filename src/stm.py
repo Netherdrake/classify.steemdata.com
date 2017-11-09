@@ -5,7 +5,7 @@ from steem.post import Post
 from steem.account import Account
 from steemdata import SteemData
 from steembase.exceptions import RPCError
-from funcy import take, some
+from funcy import take, some, merge
 from contextlib import suppress
 
 from .analyze import nsfw, labels
@@ -36,7 +36,8 @@ class AnalyzePost:
             img_b = self.get_image(img_url)
             img_b64 = binascii.b2a_base64(img_b).decode()
             result = {
-                'data': img_b64,
+                'img_url': img_url,
+                'img_b64': img_b64,
             }
             if kwargs.get('nsfw', True):
                 result['nsfw'] = nsfw(img_b)

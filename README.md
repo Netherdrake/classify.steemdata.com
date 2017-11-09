@@ -1,8 +1,7 @@
+https://vimeo.com/242144832
+
 ## TODO
- - store last processed block in Redis
- - write a steemit comment
- - test rq worker
- - create a deployment
+ - deploy as a SteemData service
 
 # Requirements
 This guide assumes MacOS with HomeBrew.

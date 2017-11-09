@@ -43,11 +43,11 @@ def uploader():
 def steem_post():
     post_identifier = request.form['identifier']
     a = AnalyzePost(post_identifier)
-    a.run()
+    a.analyze_images()
 
     return render_template(
         '_result-steem.html',
-        data=a.results,
+        results=a.results,
         post=a.post,
     )
 
