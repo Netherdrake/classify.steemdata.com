@@ -1,4 +1,4 @@
-https://vimeo.com/242144832
+DEMO: https://vimeo.com/242144832
 
 ## TODO
  - deploy as a SteemData service
@@ -23,6 +23,11 @@ Install Python 3.6.
 brew install python3
 ```
 
+Install and Start Redis:
+```
+brew install redis
+brew services start redis
+```
 
 Install Python dependencies:
 ```
