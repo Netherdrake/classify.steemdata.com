@@ -26,8 +26,13 @@ class AnalyzePost:
     def list_images(self):
         return self.post.json_metadata.get('image', [])
 
+    @staticmethod
+    def filter_images(images):
+        return (x for x in images if
+                x.split('.')[-1] in ['png', 'jpg', 'jpeg'])
+
     def analyze_images_iter(self, **kwargs):
-        for img_url in self.list_images():
+        for img_url in self.filter_image(self.list_images()):
             img_b = self.get_image(img_url)
             img_b64 = binascii.b2a_base64(img_b).decode()
             result = {
@@ -74,6 +79,25 @@ class AnalyzePost:
     @staticmethod
     def get_image(image_url: str):
         return requests.get(image_url)._content
+
+    @staticmethod
+    def resize_image(img_buffer):
+        """ Resizes large images.
+
+        Image buffer needs be:
+
+            requests.get('http://...1.jpg', stream=True).raw
+
+        """
+        i = Image.open(img_buffer)
+        if some(lambda x: x > 1000, i.size):
+            i = i.resize(
+                (i.width//2, i.height//2),
+                PIL.Image.BICUBIC
+            )
+
+        return i.tobytes('jpeg')
+
 
 
 def send_nsfw_warning(post_identifier):
