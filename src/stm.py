@@ -32,7 +32,7 @@ class AnalyzePost:
                 x.split('.')[-1] in ['png', 'jpg', 'jpeg'])
 
     def analyze_images_iter(self, **kwargs):
-        for img_url in self.filter_image(self.list_images()):
+        for img_url in self.filter_images(self.list_images()):
             img_b = self.get_image(img_url)
             img_b64 = binascii.b2a_base64(img_b).decode()
             result = {
